@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    int initial_size = 10;
+    int current_size = initial_size;
+    char **inventory = (char **)malloc(current_size * sizeof(char *)); // Allocate memory for 10 packets
+
+    // Adding initial products
+    inventory[0] = strdup("Product 1");
+    inventory[1] = strdup("Product 2");
+    // ... Add up to 10 products
+
+    // Suppose we need to add more products than the initial 10
+    if (current_size == 10) {
+        current_size += 10; // Increase the size by 10 (or any number that suits the needs)
+        inventory = (char **)realloc(inventory, current_size * sizeof(char *));
+        if (inventory == NULL) {
+            printf("Memory allocation failed!");
+            return 1; // Exit if memory allocation fails
+        }
+    }
+    
+    // Adding more products
+    inventory[10] = strdup("Product 11"); // Adding the 11th product
+
+    // If we need to reduce the inventory size
+    current_size -= 5; // Reduce the size (example: removing 5 items)
+    inventory = (char **)realloc(inventory, current_size * sizeof(char *));
+    if (inventory == NULL) {
+        printf("Memory allocation failed!");
+        return 1;
+    }
+
+    // Freeing memory
+    for (int i = 0; i < current_size; i++) {
+        free(inventory[i]); // Free each product string
+    }
+    free(inventory); // Free the inventory array
+
+    return 0;
+}
